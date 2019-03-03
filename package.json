@@ -1,0 +1,24 @@
+{
+  "name": "avif.js",
+  "version": "0.0.0",
+  "description": "AVIF polyfill for the browser",
+  "main": "avif.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kagami/avif.js.git"
+  },
+  "keywords": [
+    "AVIF",
+    "AV1",
+    "image",
+    "polyfill"
+  ],
+  "author": "Kagami Hiiragi",
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/Kagami/avif.js/issues"
+  },
+  "homepage": "https://github.com/Kagami/avif.js#readme"
+}
