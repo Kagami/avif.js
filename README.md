@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/AV1_logo_2018.svg" height="300">
+</p>
+
 # avif.js [![npm](https://img.shields.io/npm/v/avif.js.svg)](https://www.npmjs.com/package/avif.js)
 
 [AVIF](https://aomediacodec.github.io/av1-avif/) (AV1 Still Image File Format)
