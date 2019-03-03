@@ -56,7 +56,7 @@ npm install avif.js
 
 That's it! Service worker will detect all fetch requests for AVIF files and
 decode them on the fly. It works with any complex scenarios of image embedding
-you might have, e.g. `background-color` in external CSS or `XMLHttpRequest`
+you might have, e.g. `background-image` in external CSS or `XMLHttpRequest`
 from a script.
 
 If you already have Service Worker, simply add `importScripts("avif-sw.js")` to
