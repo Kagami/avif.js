@@ -1,10 +1,9 @@
 {
   "name": "avif.js",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "AVIF polyfill for the browser",
   "main": "avif.js",
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Kagami/avif.js.git"
