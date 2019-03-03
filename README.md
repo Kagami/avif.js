@@ -3,7 +3,7 @@
 [AVIF](https://aomediacodec.github.io/av1-avif/) (AV1 Still Image File Format)
 polyfill for the browser.
 
-Start using superior image compression today! :shipit:
+*Start using superior image compression today!*
 
 ## Features
 
