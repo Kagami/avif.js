@@ -18,15 +18,18 @@ npm install avif.js --save
 ```
 
 ```html
-<script src="avif.js"></script>
-<script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("avif-sw.js");
-  }
-</script>
+<head>
+  <script src="avif.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("avif-sw.js");
+    }
+  </script>
+</head>
 
 <body>
   <img src="image.avif">
+  <div style="background: url(image2.avif); height: 100%"></div>
 </body>
 ```
 
@@ -35,8 +38,8 @@ decode them on the fly. It works with any complex scenarios of image embedding
 you might have, e.g. `background-color` in external CSS or `XMLHttpRequest` in
 a script.
 
-If you already have Service Worker, simply add `importScripts("avif-sw.js")`
-call to its code instead of registering a new one.
+If you already have Service Worker, simply add `importScripts("avif-sw.js")` to
+its code instead of registering a new one.
 
 See [demo](demo) directory for an example usage.
 
