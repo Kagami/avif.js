@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "description": "AVIF polyfill for the browser",
   "main": "avif.js",
-  "scripts": {},
+  "scripts": {
+    "start": "parcel demo/index.html",
+    "demo": "D=`mktemp -d` && parcel build demo/index.html --out-dir \"$D\" --public-url ./ && git checkout gh-pages && rm `git ls-files *` && mv \"$D\"/* . && rmdir \"$D\" && git add -A && git commit -m 'Update demo'"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Kagami/avif.js.git"
@@ -19,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/Kagami/avif.js/issues"
   },
-  "homepage": "https://github.com/Kagami/avif.js#readme"
+  "homepage": "https://github.com/Kagami/avif.js#readme",
+  "devDependencies": {
+    "parcel-bundler": "^1.11.0"
+  }
 }

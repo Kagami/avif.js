@@ -5,6 +5,8 @@ polyfill for the browser.
 
 *Start using superior image compression today!*
 
+:confetti_ball: :tada: **[DEMO](https://kagami.github.io/avif.js/)** :tada: :confetti_ball:
+
 ## Features
 
 * Small size, no dependencies, <2kb minified & gzipped

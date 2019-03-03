@@ -1,0 +1,13 @@
+diff --git a/node_modules/parcel-bundler/src/Bundle.js b/node_modules/parcel-bundler/src/Bundle.js
+index e4dbf71..e2594c7 100644
+--- a/node_modules/parcel-bundler/src/Bundle.js
++++ b/node_modules/parcel-bundler/src/Bundle.js
+@@ -142,7 +142,7 @@ class Bundle {
+           Path.dirname(entryAsset.name)
+         ),
+         name + ext
+-      ).replace(/\.\.(\/|\\)/g, '__$1');
++      ).replace(/\.\.(\/|\\)/g, '');
+     }
+ 
+     // If this is an index file, use the parent directory name instead
