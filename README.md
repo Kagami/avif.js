@@ -19,7 +19,7 @@ polyfill for the browser.
 ## Supported browsers
 
 * Chrome 70+
-* Firefox 65+ (with `media.av1.enabled` enabled)
+* Firefox 65+ (with `media.av1.enabled` activated)
 * Edge 18+ (with `AV1 Video Extension` installed)
 
 After AV1 polyfill is implemented, Safari and elder browsers should
@@ -28,12 +28,14 @@ work too.
 ## Usage
 
 ```
-npm install avif.js --save
+npm install avif.js
 ```
 
 ```html
 <head>
+  <!-- Include library code -->
   <script src="avif.js"></script>
+  <!-- Register worker -->
   <script>
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("avif-sw.js");
@@ -42,8 +44,13 @@ npm install avif.js --save
 </head>
 
 <body>
+  <!-- Normal image tag works as expected -->
   <img src="image.avif">
-  <div style="background: url(image2.avif); height: 100%"></div>
+
+  <!-- So do CSS properties -->
+  <div style="background: url(image2.avif)">
+    some content inside
+  </div>
 </body>
 ```
 
