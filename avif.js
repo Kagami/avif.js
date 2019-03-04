@@ -8,7 +8,6 @@ if ("serviceWorker" in navigator) {
     return new Promise((resolve, reject) => {
       // TODO(Kagami): Check support for AV1.
       const vid = document.createElement("video");
-      vid.muted = true;
       vid.onloadeddata = () => {
         if ((vid.mozDecodedFrames == null ||
              vid.mozDecodedFrames > 0)
