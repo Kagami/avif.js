@@ -5,6 +5,9 @@ const BOX_HEADER_SIZE = 8;
 const BOX_FTYP = 0x66747970;
 const BOX_META = 0x6d657461;
 const BOX_ILOC = 0x696c6f63;
+const BOX_IPRP = 0x69707270;
+const BOX_IPCO = 0x6970636f;
+const BOX_ISPE = 0x69737065;
 
 // MOV container stub with single video track.
 const MOV_HEADER = (function() {
@@ -14,6 +17,8 @@ const MOV_HEADER = (function() {
 const MOV_HEADER_SIZE = MOV_HEADER.byteLength;
 const MOV_STSZ_OFFSET = 568;
 const MOV_MDAT_OFFSET = 608;
+const MOV_TKHD_WIDTH_OFFSET = 234;
+const MOV_AV01_WIDTH_OFFSET = 437;
 
 // Pending fetch events.
 const taskById = {};
@@ -84,8 +89,12 @@ function avif2obu(ab) {
 
   const view = new DataView(ab);
   const len = ab.byteLength;
-  let brandsCheck = false;
   let pos = 0;
+
+  let brandsCheck = false;
+  let width = 0;
+  let height = 0;
+  let data =  null;
 
   while (pos < len) {
     const size = getU32();
@@ -103,8 +112,17 @@ function avif2obu(ab) {
       pos += 1; // version
       pos += 3; // flags
       continue;
+    case BOX_IPRP:
+      continue;
+    case BOX_IPCO:
+      continue;
+    case BOX_ISPE:
+      pos += 1; // version
+      pos += 3; // flags
+      width = getU32();
+      height = getU32();
+      break;
     case BOX_ILOC:
-      assert(brandsCheck, "brands not found");
       pos += 1; // version
       pos += 3; // flags
       const offsetSizeAndLengthSize = getU8();
@@ -128,28 +146,38 @@ function avif2obu(ab) {
       const extentLength = lengthSize === 4 ? getU32() : 0;
       const u8 = new Uint8Array(ab);
       const offset = baseOffset + extentOffset;
-      return u8.subarray(offset, offset + extentLength);
+      data = u8.subarray(offset, offset + extentLength);
+      break;
     }
 
     pos = end;
   }
 
-  throw new Error("picture not found");
+  assert(brandsCheck, "bad brands");
+  assert(width && height, "bad image width or height");
+  assert(data, "picture data not found");
+  return {width, height, data};
 }
 
 // Embed OBU into MOV container stub as video frame.
-function obu2mov(obu) {
-  const fileSize = MOV_HEADER_SIZE + obu.byteLength;
+// TODO(Kagami): Fix matrix, bitdepth, av1C metadata.
+function obu2mov({width, height, data}) {
+  const fileSize = MOV_HEADER_SIZE + data.byteLength;
   const ab = new ArrayBuffer(fileSize);
   const view = new DataView(ab);
   const u8 = new Uint8Array(ab);
   u8.set(MOV_HEADER);
-  u8.set(obu, MOV_HEADER_SIZE);
+  u8.set(data, MOV_HEADER_SIZE);
   // |....|stsz|.|...|xxxx|
-  view.setUint32(MOV_STSZ_OFFSET + BOX_HEADER_SIZE + 4, obu.byteLength);
+  view.setUint32(MOV_STSZ_OFFSET + BOX_HEADER_SIZE + 4, data.byteLength);
   // |xxxx|mdat|
-  view.setUint32(MOV_MDAT_OFFSET, obu.byteLength + BOX_HEADER_SIZE);
-  // FIXME(Kagami): Fix width, height, av1C metadata.
+  view.setUint32(MOV_MDAT_OFFSET, data.byteLength + BOX_HEADER_SIZE);
+  // |xxxx|xxxx|
+  view.setUint32(MOV_TKHD_WIDTH_OFFSET, width);
+  view.setUint32(MOV_TKHD_WIDTH_OFFSET + 4, height);
+  // |xx|xx|
+  view.setUint16(MOV_AV01_WIDTH_OFFSET, width);
+  view.setUint16(MOV_AV01_WIDTH_OFFSET + 2, height);
   return ab;
 }
 
