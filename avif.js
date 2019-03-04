@@ -3,12 +3,12 @@ if ("serviceWorker" in navigator) {
 
   // Decode AVIF data using native browser's AV1 decoder.
   const decodeMov = arr => {
+    const blob = new Blob([arr], {type: "video/mp4"});
+    const blobURL = URL.createObjectURL(blob);
     return new Promise((resolve, reject) => {
       // TODO(Kagami): Check support for AV1.
       const vid = document.createElement("video");
       vid.muted = true;
-      const blob = new Blob([arr], {type: "video/mp4"});
-      const blobURL = URL.createObjectURL(blob);
       vid.onloadeddata = () => {
         if ((vid.mozDecodedFrames == null ||
              vid.mozDecodedFrames > 0)
@@ -36,6 +36,12 @@ if ("serviceWorker" in navigator) {
         height: c.height,
         data: imgData.data.buffer,
       }
+    }).then(res => {
+      URL.revokeObjectURL(blobURL);
+      return res;
+    }, err => {
+      URL.revokeObjectURL(blobURL);
+      throw err;
     });
   };
 

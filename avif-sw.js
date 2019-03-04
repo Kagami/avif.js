@@ -26,7 +26,6 @@ function assert(cond, str) {
 // Convert raw pixel data to BMP.
 // Based on canvas-to-bmp ((c) 2015 Ken "Epistemex" Fyrstenberg, MIT).
 function rgba2bmp(ab, w, h) {
-  // helper methods to move current buffer position
   function setU16(v) {view.setUint16(pos, v, true); pos += 2;}
   function setU32(v) {view.setUint32(pos, v, true); pos += 4;}
 
@@ -42,13 +41,13 @@ function rgba2bmp(ab, w, h) {
   let pos = 0;
   let y = 0;
 
-  // write file header
+  // BMP header.
   setU16(0x4d42);         // BM
   setU32(fileLength);     // total length
   pos += 4;               // skip unused fields
   setU32(headerSize);     // offset to pixels
 
-  // DIB header
+  // DIB header.
   setU32(40);             // DIB header size
   setU32(w);              // width
   setU32(-h >>> 0);       // negative = top-to-bottom
@@ -59,7 +58,7 @@ function rgba2bmp(ab, w, h) {
   setU32(2835);           // pixels/meter h (~72 DPI x 39.3701 inch/m)
   setU32(2835);           // pixels/meter v
 
-  // bitmap data, change order of ABGR to BGR
+  // Bitmap data, change order from ABGR to BGR.
   while (y < h) {
     const shift = headerSize + y * stride;
     let x = 0;
@@ -159,8 +158,7 @@ function avif2mov(ab) {
   return obu2mov(avif2obu(ab));
 }
 
-// Do preparation work and pass job request to the DOM context.
-// TODO(Kagami): Cache by URL?
+// Do preparation work and pass job request to DOM context.
 function decodeAvif(id, req, client) {
   // TODO(Kagami): Apply request headers?
   return fetch(req.url, {credentials: "same-origin"})
@@ -186,13 +184,12 @@ self.addEventListener("message", e => {
 });
 
 // Handle AVIF requests.
-// TODO(Kagami): Timeout for fetching/handling.
+// TODO(Kagami): Error reporting?
 self.addEventListener("fetch", e => {
   if (!e.clientId) return;
   // TODO(Kagami): Better check for AVIF. HTTP headers?
   if (e.request.url.match(/\.avif$/i)) {
     const id = taskCounter++;
-    // TODO(Kagami): What should we do in case of error?
     e.respondWith(new Promise((resolve, reject) => {
       taskById[id] = {resolve, reject};
       clients.get(e.clientId)
