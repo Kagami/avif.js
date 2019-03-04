@@ -5,6 +5,7 @@
   "main": "avif.js",
   "scripts": {
     "start": "parcel demo/index.html",
+    "size": "cat avif.js avif-sw.js | terser -c -m | gzip -c | wc -c",
     "demo": "D=`mktemp -d` && parcel build demo/index.html --out-dir \"$D\" --public-url ./ && git checkout gh-pages && rm `git ls-files *` && mv \"$D\"/* . && rmdir \"$D\" && git add -A && git commit -m 'Update demo'"
   },
   "repository": {
@@ -24,6 +25,7 @@
   },
   "homepage": "https://github.com/Kagami/avif.js#readme",
   "devDependencies": {
-    "parcel-bundler": "^1.11.0"
+    "parcel-bundler": "^1.11.0",
+    "terser": "^3.16.1"
   }
 }

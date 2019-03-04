@@ -12,7 +12,7 @@ polyfill for the browser.
 
 ## Features
 
-* Small size, no dependencies, <2kb minified & gzipped
+* Small, no dependencies, <2kb minified & gzipped
 * Intercepts AVIF fetch requests so works in any scenario
 * Uses native browser decoder and should be reasonably fast
 
