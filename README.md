@@ -66,7 +66,7 @@ See [demo](demo) directory for the usage example.
 
 ## Technical details for nerds
 
-AVIF file is basically AV1 keyframe packed inside ISOBMFF container, almost
+AVIF file is basically an AV1 keyframe packed inside ISOBMFF container, almost
 identical to the HEIF structure, except AV1 video format instead of HEVC is
 used. Latest versions of Chrome and Firefox support AV1 video decoding, but
 still can't display AVIF images, it usually takes some time before new format
@@ -75,7 +75,6 @@ will be added. See e.g. [Firefox issue](https://bugzilla.mozilla.org/show_bug.cg
 Though abovementioned technical aspects of AVIF make it quite easy to implement
 as a tiny polyfill. All we need to do is repack AVIF as a single-frame AV1
 video and decode it using native decoder. This is exactly what avif.js does.
-
 First it fetches the AVIF file into binary buffer, then parses the ISOBMFF
 structure, then searches and extracts the actual frame data (OBUs) and finally
 embeds it into MP4 video file. Now we can decode that video with standard
