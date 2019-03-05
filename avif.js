@@ -76,24 +76,25 @@ export function register(regPromise, opts) {
     onUpdate: () => window.location.reload(),
   }, opts);
 
-  let refreshing = false;
-  navigator.serviceWorker.addEventListener("controllerchange", () => {
-    if (refreshing) return;
-    refreshing = true;
-    opts.onUpdate();
-  });
-
-  navigator.serviceWorker.addEventListener("message", onMessage);
-
   if (typeof regPromise === "string") {
     const regOpts = opts.scope ? {scope: opts.scope} : undefined;
     regPromise = navigator.serviceWorker.register(regPromise, regOpts);
   }
   regPromise.then(reg => {
+    let refreshing = false;
+    function refresh() {
+      if (refreshing) return;
+      refreshing = true;
+      opts.onUpdate(reg);
+    }
     function promptUserToRefresh() {
-      Promise.resolve(opts.confirmUpdate()).then(shouldUpdate => {
+      Promise.resolve(opts.confirmUpdate(reg)).then(shouldUpdate => {
         if (shouldUpdate) {
-          reg.waiting.postMessage({type: "avif-update"});
+          if (navigator.serviceWorker.controller) {
+            reg.waiting.postMessage({type: "avif-update"});
+          } else {
+            refresh();
+          }
         }
       });
     }
@@ -102,9 +103,12 @@ export function register(regPromise, opts) {
         if (this.state === "installed") promptUserToRefresh();
       });
     }
-    if (!reg) return;
+
+    navigator.serviceWorker.addEventListener("message", onMessage);
+    navigator.serviceWorker.addEventListener("controllerchange", refresh);
+
     if (reg.waiting) return promptUserToRefresh();
-    if (reg.installing) awaitStateChange();
+    if (reg.active && !navigator.serviceWorker.controller) return refresh();
     reg.addEventListener("updatefound", awaitStateChange);
   });
 }
