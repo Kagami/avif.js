@@ -20,7 +20,10 @@ const MOV_MDAT_OFFSET = 608;
 const MOV_TKHD_WIDTH_OFFSET = 234;
 const MOV_AV01_WIDTH_OFFSET = 437;
 
-// Pending fetch events.
+// Wait for client to become ready.
+const waitForClient = {};
+
+// Pending tasks.
 const taskById = {};
 let taskCounter = 0;
 
@@ -193,22 +196,32 @@ function decodeAvif(id, req, client) {
     .then(res => res.arrayBuffer())
     .then(avifArr => {
       const movArr = avif2mov(avifArr);
-      client.postMessage({id, type: "avif-mov", data: movArr}, [movArr]);
+      waitForClient[client.id].ready.then(() => {
+        client.postMessage({id, type: "avif-mov", data: movArr}, [movArr]);
+      });
     });
 }
 
 // Handle job responses.
 self.addEventListener("message", e => {
   const msg = e.data;
-  if (msg && msg.type === "avif-update") {
+  if (!msg) return;
+  if (msg.type === "avif-update") {
     skipWaiting();
-  } else if (msg && msg.type === "avif-rgba") {
+  } else if (msg.type === "avif-ready") {
+    const cid = e.source.id;
+    if (waitForClient[cid]) {
+      waitForClient[cid].resolve();
+    } else {
+      waitForClient[cid] = {ready: Promise.resolve(), resolve: null};
+    }
+  } else if (msg.type === "avif-rgba") {
     const bmpArr = rgba2bmp(msg.data, msg.width, msg.height);
     const blob = new Blob([bmpArr], {type: "image/bmp"});
     // TODO(Kagami): Apply response metadata?
     const res = new Response(blob);
     taskById[msg.id] && taskById[msg.id].resolve(res);
-  } else if (msg && msg.type === "avif-error") {
+  } else if (msg.type === "avif-error") {
     taskById[msg.id] && taskById[msg.id].reject(new Error(msg.data));
   }
 });
@@ -216,13 +229,18 @@ self.addEventListener("message", e => {
 // Handle AVIF requests.
 // TODO(Kagami): Error reporting?
 self.addEventListener("fetch", e => {
-  if (!e.clientId) return;
+  const cid = e.clientId;
   // TODO(Kagami): Better check for AVIF. HTTP headers?
   if (e.request.url.match(/\.avif$/i)) {
+    if (!waitForClient[cid]) {
+      let resolve = null;
+      let ready = new Promise(res => { resolve = res; });
+      waitForClient[cid] = {ready, resolve};
+    }
     const id = taskCounter++;
     e.respondWith(new Promise((resolve, reject) => {
       taskById[id] = {resolve, reject};
-      clients.get(e.clientId)
+      clients.get(cid)
         .then(client => decodeAvif(id, e.request, client))
         .catch(reject);
     }).then(res => {

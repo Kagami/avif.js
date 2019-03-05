@@ -104,11 +104,15 @@ export function register(regPromise, opts) {
       });
     }
 
-    navigator.serviceWorker.addEventListener("message", onMessage);
     navigator.serviceWorker.addEventListener("controllerchange", refresh);
+    navigator.serviceWorker.addEventListener("message", onMessage);
+    if (navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({type: "avif-ready"});
+    }
 
-    if (reg.waiting) return promptUserToRefresh();
     if (reg.active && !navigator.serviceWorker.controller) return refresh();
+    if (reg.waiting) return promptUserToRefresh();
+    if (reg.installing) return awaitStateChange();
     reg.addEventListener("updatefound", awaitStateChange);
   });
 }
