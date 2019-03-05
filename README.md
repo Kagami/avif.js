@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/AV1_logo_2018.svg" height="300">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/AV1_logo_2018.svg" height="200">
 </p>
 
 # avif.js [![npm](https://img.shields.io/npm/v/avif.js.svg)](https://www.npmjs.com/package/avif.js)
@@ -18,12 +18,18 @@ polyfill for the browser.
 
 ## Supported browsers
 
-* Chrome 70+
+* Chrome 70+ (desktop version)
 * Firefox 65+ (with `media.av1.enabled` activated)
 * Edge 18+ (with `AV1 Video Extension` installed)
 
 After AV1 polyfill is implemented, Safari and elder browsers should
 work too.
+
+## Limitations of Service Worker API
+
+* Needs to be served from HTTPS
+* Doesn't work in Firefox Private Window
+* Requires page reload on first visit to display static assets
 
 ## Usage
 
