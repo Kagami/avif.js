@@ -80,7 +80,7 @@ export function register(regPromise, opts) {
   navigator.serviceWorker.addEventListener("controllerchange", () => {
     if (refreshing) return;
     refreshing = true;
-    opts.onUpdate(reg);
+    opts.onUpdate();
   });
 
   navigator.serviceWorker.addEventListener("message", onMessage);
@@ -91,7 +91,7 @@ export function register(regPromise, opts) {
   }
   regPromise.then(reg => {
     function promptUserToRefresh() {
-      Promise.resolve(opts.confirmUpdate(reg)).then(shouldUpdate => {
+      Promise.resolve(opts.confirmUpdate()).then(shouldUpdate => {
         if (shouldUpdate) {
           reg.waiting.postMessage({type: "avif-update"});
         }
