@@ -25,12 +25,6 @@ polyfill for the browser.
 After AV1 polyfill is implemented, Safari and elder browsers should
 work too.
 
-## Limitations of Service Worker API
-
-* Needs to be served from HTTPS
-* Doesn't work in Firefox Private Window
-* Requires page reload on first visit to display static assets
-
 ## Usage
 
 ```
@@ -97,6 +91,12 @@ element in a worker, so pass decoding request to the main thread and get result
 back. Also container fields of the video should correspond to properties of the
 still image, some offsets need to be fixed and so on. But you got the general
 idea.
+
+## Limitations of Service Worker API
+
+* Needs to be served from HTTPS
+* Doesn't work in Firefox Private Window
+* Requires page reload on first visit to display static assets
 
 ## TODO
 
