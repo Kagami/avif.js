@@ -208,6 +208,8 @@ self.addEventListener("message", e => {
   if (!msg) return;
   if (msg.type === "avif-update") {
     skipWaiting();
+  } else if (msg.type === "avif-claim") {
+    clients.claim();
   } else if (msg.type === "avif-ready") {
     const cid = e.source.id;
     if (waitForClient[cid]) {
