@@ -42,7 +42,7 @@ function decodeMov(arr) {
 }
 
 // Respond to job requests from worker.
-function onMessage(e) {
+export function onMessage(e) {
   const msg = e.data;
   if (msg && msg.type === "avif-mov") {
     decodeMov(msg.data).then(decoded => {
@@ -109,4 +109,4 @@ export function register(regPromise, opts) {
   });
 }
 
-export default {register};
+export default {onMessage, register};
