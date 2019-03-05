@@ -58,9 +58,6 @@ decode them on the fly. It works with any complex scenarios of image embedding
 you might have, e.g. `background-image` in external CSS or `XMLHttpRequest`
 from a script.
 
-If you already have Service Worker, simply add `importScripts("avif-sw.js")` to
-its code instead of registering a new one.
-
 See [demo](demo) directory for the usage example.
 
 ## Technical details for nerds
