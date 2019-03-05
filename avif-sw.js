@@ -200,7 +200,9 @@ function decodeAvif(id, req, client) {
 // Handle job responses.
 self.addEventListener("message", e => {
   const msg = e.data;
-  if (msg && msg.type === "avif-rgba") {
+  if (msg && msg.type === "avif-update") {
+    skipWaiting();
+  } else if (msg && msg.type === "avif-rgba") {
     const bmpArr = rgba2bmp(msg.data, msg.width, msg.height);
     const blob = new Blob([bmpArr], {type: "image/bmp"});
     // TODO(Kagami): Apply response metadata?

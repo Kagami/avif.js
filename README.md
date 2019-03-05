@@ -31,27 +31,26 @@ work too.
 npm install avif.js
 ```
 
-```html
-<head>
-  <!-- Include library code -->
-  <script src="avif.js"></script>
-  <!-- Register worker -->
-  <script>
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("avif-sw.js");
-    }
-  </script>
-</head>
+```js
+// Put this to reg.js and serve avif-sw.js from web root
+require("avif.js").register("/avif-sw.js");
+```
 
+```html
+<html>
 <body>
-  <!-- Normal image tag works as expected -->
+  <!-- Register worker -->
+  <script src="reg.js"></script>
+
+  <!-- Can embed AVIF with IMG tag now -->
   <img src="image.avif">
 
-  <!-- So do CSS properties -->
+  <!-- Or via CSS property -->
   <div style="background: url(image2.avif)">
-    some content inside
+    some content
   </div>
 </body>
+</html>
 ```
 
 That's it! Service worker will detect all fetch requests for AVIF files and
