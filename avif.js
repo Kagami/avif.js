@@ -99,8 +99,8 @@ export function register(regPromise, opts) {
       });
     }
     function awaitStateChange() {
+      const waitFor = navigator.serviceWorker.controller ? "installed" : "activated";
       reg.installing.addEventListener("statechange", function() {
-        const waitFor = navigator.serviceWorker.controller ? "installed" : "activated";
         if (this.state === waitFor) promptUserToRefresh();
       });
     }
