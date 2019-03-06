@@ -100,7 +100,8 @@ export function register(regPromise, opts) {
     }
     function awaitStateChange() {
       reg.installing.addEventListener("statechange", function() {
-        if (this.state === "installed") promptUserToRefresh();
+        const waitFor = navigator.serviceWorker.controller ? "installed" : "activated";
+        if (this.state === waitFor) promptUserToRefresh();
       });
     }
 
@@ -110,9 +111,7 @@ export function register(regPromise, opts) {
       navigator.serviceWorker.controller.postMessage({type: "avif-ready"});
     }
 
-    if (reg.active && !navigator.serviceWorker.controller) return refresh();
     if (reg.waiting) return promptUserToRefresh();
-    if (reg.installing) return awaitStateChange();
     reg.addEventListener("updatefound", awaitStateChange);
   });
 }
