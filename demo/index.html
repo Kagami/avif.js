@@ -6,20 +6,60 @@
   <link rel="icon" href="favicon.png">
   <style>
     html, body {
-      height: 100%;
-      margin: 0;
+      min-height: 100%;
+      margin: 0 0 10px 0;
       padding: 0;
+    }
+    body {
+      font-family: Helvetica, sans-serif;
+      text-align: center;
+      color: #333;
     }
     img {
       display: block;
-      max-width: 100%;
-      max-height: 100%;
-      padding: 0;
+    }
+    .item {
+      display: inline-block;
+      border: 2px solid #aaa;
+    }
+    .caption {
+      background-color: #ddd;
+      padding: 3px;
+    }
+    .mexico-img {
+      width: 600px;
+    }
+    .irvine-img {
+      width: 480px;
+      height: 640px;
+    }
+    .ronda {
+      width: 540px;
+    }
+    .ronda-img {
+      height: 540px;
+      transform: rotate(90deg);
+      margin: 210px -210px;
     }
   </style>
   <script src="index.js"></script>
 </head>
 <body>
-  <img src="Mexico.avif">
+  <h1>Test AVIF images</h1>
+
+  <div class="item mexico">
+    <div class="caption">&lt;img&gt;</div>
+    <img class="mexico-img" src="Mexico.avif">
+  </div>
+
+  <div class="item irvine">
+    <div class="caption">background-image: url()</div>
+    <div class="irvine-img" style="background-image: url(Irvine_CA.avif)"></div>
+  </div>
+
+  <div class="item ronda">
+    <div class="caption">transform: rotate(90deg)</div>
+    <img class="ronda-img" src="Ronda_rotate90.avif">
+  </div>
 </body>
 </html>
