@@ -1,14 +1,10 @@
 <p align="center">
   <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/AV1_logo_2018.svg" height="200">
+  <br><b>AVIF (AV1 Still Image File Format) polyfill for the browser</b>
+  <br><i>Start using superior image compression today!</i> :shipit:
+  <br>:confetti_ball: :tada: <b><a href="https://kagami.github.io/avif.js/">DEMO</a></b> :tada: :confetti_ball:
+  <br><a href="https://www.npmjs.com/package/avif.js"><img src="https://img.shields.io/npm/v/avif.js.svg"></a>
 </p>
-
-# avif.js [![npm](https://img.shields.io/npm/v/avif.js.svg)](https://www.npmjs.com/package/avif.js)
-
-[AVIF](https://aomediacodec.github.io/av1-avif/) (AV1 Still Image File Format)
-polyfill for the browser.
-
-*Start using superior image compression today!*
-:confetti_ball: :tada: **[DEMO](https://kagami.github.io/avif.js/)** :tada: :confetti_ball:
 
 ## Features
 
