@@ -91,7 +91,7 @@ idea.
 ## Limitations of Service Worker API
 
 * Needs to be served from HTTPS
-* Doesn't work in Firefox Private Window
+* Doesn't work in Firefox/Edge Private Window
 * Requires page reload on first visit to display static assets
 
 ## TODO
