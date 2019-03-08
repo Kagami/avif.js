@@ -1,11 +1,12 @@
 // Decode AVIF data using native browser's AV1 decoder.
+const isEdge = navigator.userAgent.indexOf("Edge") >= 0;
 function decodeMov(arr) {
   const blob = new Blob([arr], {type: "video/mp4"});
   const blobURL = URL.createObjectURL(blob);
   return new Promise((resolve, reject) => {
     // TODO(Kagami): Check support for AV1.
     const vid = document.createElement("video");
-    vid.onloadeddata = () => {
+    vid.addEventListener(isEdge ? "ended" : "loadeddata", () => {
       if ((vid.mozDecodedFrames == null ||
            vid.mozDecodedFrames > 0)
           &&
@@ -15,11 +16,15 @@ function decodeMov(arr) {
       } else {
         reject(new Error("partial AV1 frame"));
       }
-    };
-    vid.onerror = () => {
+    });
+    vid.addEventListener("error", () => {
       reject(new Error("cannot decode AV1 frame"));
-    };
+    });
+    vid.muted = true;
     vid.src = blobURL;
+    if (isEdge) {
+      vid.play();
+    }
   }).then(vid => {
     const c = document.createElement("canvas");
     const ctx = c.getContext("2d");
