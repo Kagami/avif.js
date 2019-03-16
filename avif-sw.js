@@ -105,6 +105,7 @@ function avif2obu(ab) {
     const end = pos + size - BOX_HEADER_SIZE;
     assert(size >= BOX_HEADER_SIZE, "corrupted file");
 
+    // TODO(Kagami): Add box version checks!
     switch (type) {
     case BOX_FTYP:
       // FIXME(Kagami): Check brands.
