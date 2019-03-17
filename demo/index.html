@@ -15,8 +15,18 @@
       text-align: center;
       color: #333;
     }
+    button {
+      font-size: 25px;
+      cursor: pointer;
+    }
+    button:disabled {
+      cursor: not-allowed;
+    }
     img {
       display: block;
+    }
+    .hidden {
+      display: none;
     }
     .item {
       display: inline-block;
@@ -25,6 +35,9 @@
     .caption {
       background-color: #ddd;
       padding: 3px;
+    }
+    .user-img {
+      max-width: 100%;
     }
     .mexico-img {
       width: 600px;
@@ -45,7 +58,13 @@
   <script src="index.js"></script>
 </head>
 <body>
-  <h1>Test AVIF images</h1>
+  <h1>
+    Test AVIF images
+    <button id="load-button" title="Load AVIF image">Load</button>
+  </h1>
+
+  <div class="item user hidden" id="custom-item"></div>
+  <input class="hidden" id="file-input" type="file" accept=".avif">
 
   <div class="item mexico">
     <div class="caption">&lt;img&gt;</div>

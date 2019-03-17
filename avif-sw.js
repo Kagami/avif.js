@@ -220,12 +220,24 @@ self.addEventListener("message", e => {
     }
   } else if (msg.type === "avif-rgba") {
     const bmpArr = rgba2bmp(msg.data, msg.width, msg.height);
-    const blob = new Blob([bmpArr], {type: "image/bmp"});
-    // TODO(Kagami): Apply response metadata?
-    const res = new Response(blob);
-    taskById[msg.id] && taskById[msg.id].resolve(res);
+    taskById[msg.id] && taskById[msg.id].resolve(bmpArr);
   } else if (msg.type === "avif-error") {
     taskById[msg.id] && taskById[msg.id].reject(new Error(msg.data));
+  } else if (msg.type === "avif-task") {
+    const client = e.source;
+    const id = msg.id;
+    const avifArr = msg.data;
+    new Promise((resolve, reject) => {
+      taskById[id] = {resolve, reject};
+      const movArr = avif2mov(avifArr);
+      client.postMessage({id, type: "avif-mov", data: movArr}, [movArr]);
+    }).then(bmpArr => {
+      delete taskById[id];
+      client.postMessage({id, type: "avif-task", data: bmpArr}, [bmpArr]);
+    }, err => {
+      delete taskById[id];
+      client.postMessage({id, type: "avif-error", data: err.message});
+    });
   }
 });
 
@@ -246,6 +258,10 @@ self.addEventListener("fetch", e => {
       clients.get(cid)
         .then(client => decodeAvif(id, e.request, client))
         .catch(reject);
+    }).then(bmpArr => {
+      const blob = new Blob([bmpArr], {type: "image/bmp"});
+      // TODO(Kagami): Apply response metadata?
+      return new Response(blob);
     }).then(res => {
       delete taskById[id];
       return res;

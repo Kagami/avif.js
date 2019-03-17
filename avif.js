@@ -60,7 +60,7 @@ export function onMessage(e) {
       navigator.serviceWorker.controller.postMessage({
         id: msg.id,
         type: "avif-error",
-        data: err.toString(),
+        data: err.message,
       });
     });
   }
