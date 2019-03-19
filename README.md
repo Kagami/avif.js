@@ -56,6 +56,8 @@ from a script.
 
 See [demo](demo) directory for the usage example.
 
+To generate AVIF files you may use [go-avif CLI utility](https://github.com/Kagami/go-avif#cli).
+
 ## Technical details for nerds
 
 AVIF file is basically an AV1 keyframe packed inside ISOBMFF container, almost
