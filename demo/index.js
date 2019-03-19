@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function emptyCustomItem() {
-    customItem.classList.toggle("hidden");
+    customItem.classList.add("hidden");
     while (customItem.firstChild) {
       customItem.firstChild.remove();
     }
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
     img.className = "user-img";
     img.src = URL.createObjectURL(blob);
     customItem.appendChild(img);
-    customItem.classList.toggle("hidden");
+    customItem.classList.remove("hidden");
     loadButton.disabled = false;
   }
 
