@@ -15,7 +15,7 @@
 ## Supported browsers
 
 * Chrome 70+ (desktop version)
-* Firefox 61+ (with `media.av1.enabled` activated)
+* Firefox 63+ (with `media.av1.enabled` activated)
 * Firefox for Android 64+ (with `media.av1.enabled` and `media.av1.use-dav1d` activated)
 * Edge 18+ (with `AV1 Video Extension` installed)
 * Bromite 72+
