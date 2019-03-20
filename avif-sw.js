@@ -38,7 +38,7 @@ function rgba2bmp(ab, w, h) {
   function setU32(v) {view.setUint32(pos, v, true); pos += 4;}
 
   const headerSize = 54;                             // 14 + 40 bytes
-  const stride = Math.floor((32 * w + 31) / 32) * 3; // row length incl. padding
+  const stride = Math.floor((24 * w + 31) / 32) * 4; // row length incl. padding
   const pixelArraySize = stride * h;                 // total bitmap size
   const fileLength = headerSize + pixelArraySize;    // header size is known + bitmap
   const file = new ArrayBuffer(fileLength);          // raw byte buffer (returned)
