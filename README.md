@@ -18,7 +18,7 @@
 * Firefox 63+ (with `media.av1.enabled` activated)
 * Firefox for Android 64+ (with `media.av1.enabled` and `media.av1.use-dav1d` activated)
 * Edge 18+ (with `AV1 Video Extension` installed)
-* Bromite 72+
+* Bromite 71+
 
 After AV1 polyfill is implemented, Safari and elder browsers should
 work too.
