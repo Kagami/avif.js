@@ -22,9 +22,7 @@ function decodeMov(arr) {
     });
     vid.muted = true;
     vid.src = blobURL;
-    if (isEdge) {
-      vid.play();
-    }
+    vid.play();
   }).then(vid => {
     const c = document.createElement("canvas");
     const ctx = c.getContext("2d");
