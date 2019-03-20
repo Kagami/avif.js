@@ -15,8 +15,10 @@
 ## Supported browsers
 
 * Chrome 70+ (desktop version)
-* Firefox 65+ (with `media.av1.enabled` activated)
+* Firefox 61+ (with `media.av1.enabled` activated)
+* Firefox for Android 64+ (with `media.av1.enabled` and `media.av1.use-dav1d` activated)
 * Edge 18+ (with `AV1 Video Extension` installed)
+* Bromite 72+
 
 After AV1 polyfill is implemented, Safari and elder browsers should
 work too.
