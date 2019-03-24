@@ -23,7 +23,7 @@ function assert(cond, str) {
 }
 
 // Extract OBU.
-function avif2obu(ab) {
+export function avif2obu(ab) {
   function getU8() {const v = view.getUint8(pos); pos += 1; return v;}
   function getU16() {const v = view.getUint16(pos); pos += 2; return v;}
   function getU32() {const v = view.getUint32(pos); pos += 4; return v;}
@@ -103,7 +103,7 @@ function avif2obu(ab) {
 
 // Embed OBU into MOV container stub as video frame.
 // TODO(Kagami): Fix matrix, bitdepth, av1C metadata.
-function obu2mov({width, height, data}) {
+export function obu2mov({width, height, data}) {
   const fileSize = MOV_HEADER_SIZE + data.byteLength;
   const ab = new ArrayBuffer(fileSize);
   const view = new DataView(ab);

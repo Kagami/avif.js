@@ -1,7 +1,10 @@
 import avif from "../avif.js";
 
 if ("serviceWorker" in navigator) {
-  avif.register(navigator.serviceWorker.register("../avif-sw.js"));
+  avif.register(navigator.serviceWorker.register("../avif-sw.js"), {
+    wasmURL: require("dav1d.js/dav1d.wasm"),
+    // forcePolyfill: true,
+  });
 }
 
 document.addEventListener("DOMContentLoaded", () => {

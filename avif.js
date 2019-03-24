@@ -4,7 +4,6 @@ function decodeMov(arr) {
   const blob = new Blob([arr], {type: "video/mp4"});
   const blobURL = URL.createObjectURL(blob);
   return new Promise((resolve, reject) => {
-    // TODO(Kagami): Check support for AV1.
     const vid = document.createElement("video");
     vid.addEventListener(isEdge ? "ended" : "loadeddata", () => {
       if ((vid.mozDecodedFrames == null ||
@@ -45,7 +44,7 @@ function decodeMov(arr) {
 }
 
 // Respond to job requests from worker.
-export function onMessage(e) {
+function handleMessage(e) {
   const msg = e.data;
   if (msg && msg.type === "avif-mov") {
     decodeMov(msg.data).then(decoded => {
@@ -64,11 +63,21 @@ export function onMessage(e) {
   }
 }
 
+function hasAv1Support() {
+  const vid = document.createElement("video");
+  return vid.canPlayType('video/mp4; codecs="av01.0.05M.08"') === "probably";
+}
+
+function getServiceWorkerOpts({forcePolyfill, wasmURL}) {
+  const usePolyfill = forcePolyfill || !hasAv1Support();
+  return {usePolyfill, wasmURL};
+}
+
 // See https://redfin.engineering/how-to-fix-the-refresh-button-when-using-service-workers-a8e27af6df68
 // for the Service Worker update best practices.
 export function register(regPromise, opts) {
   if (!("serviceWorker" in navigator)) {
-    throw new Error("Service Worker API is not supported");
+    return Promise.reject(new Error("Service Worker API is not supported"));
   }
 
   if (typeof opts === "function") {
@@ -77,13 +86,15 @@ export function register(regPromise, opts) {
   opts = Object.assign({
     confirmUpdate: () => true,
     onUpdate: () => window.location.reload(),
+    wasmURL: "/staic/js/dav1d.wasm",
+    forcePolyfill: false,
   }, opts);
 
   if (typeof regPromise === "string") {
     const regOpts = opts.scope ? {scope: opts.scope} : undefined;
     regPromise = navigator.serviceWorker.register(regPromise, regOpts);
   }
-  regPromise.then(reg => {
+  return regPromise.then(reg => {
     let refreshing = false;
     function refresh() {
       if (refreshing) return;
@@ -109,9 +120,10 @@ export function register(regPromise, opts) {
     }
 
     navigator.serviceWorker.addEventListener("controllerchange", refresh);
-    navigator.serviceWorker.addEventListener("message", onMessage);
+    navigator.serviceWorker.addEventListener("message", handleMessage);
     if (navigator.serviceWorker.controller) {
-      navigator.serviceWorker.controller.postMessage({type: "avif-ready"});
+      const swOpts = getServiceWorkerOpts(opts);
+      navigator.serviceWorker.controller.postMessage({type: "avif-ready", data: swOpts});
     }
 
     if (reg.waiting) return promptUserToRefresh();
@@ -119,4 +131,4 @@ export function register(regPromise, opts) {
   });
 }
 
-export default {onMessage, register};
+export default {register};

@@ -8,11 +8,13 @@
 
 ## Features
 
-* Small, no dependencies, <3kb minified & gzipped
+* Small, optional dependency, <4kb minified & gzipped
 * Intercepts AVIF fetch requests so works in any scenario
-* Uses native browser decoder and should be reasonably fast
+* Uses native decoder if possible and should be reasonably fast
 
 ## Supported browsers
+
+**With native decoder:**
 
 * Chrome Desktop 70+
 * Firefox 63+ (with `media.av1.enabled` activated)
@@ -20,8 +22,12 @@
 * Edge 18+ (with `AV1 Video Extension` installed)
 * Bromite 71+
 
-After AV1 polyfill is implemented, Safari and elder browsers should
-work too.
+**With AV1 polyfill:**
+
+* Chrome 57+
+* Firefox 53+
+* Edge 17+
+* Safari 11+
 
 ## Usage
 
@@ -103,7 +109,6 @@ idea.
 * Benchmark
 * Check for AVIF support
 * Support for browsers without Service Workers
-* Use full-blown decoder for browsers without AV1 support
 
 ## License
 
