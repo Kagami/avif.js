@@ -42,6 +42,13 @@ function resolveTask(taskId, cb) {
   }
 }
 
+function rejectTask(taskId, err) {
+  const task = taskById[taskId];
+  if (task) {
+    task.reject(err);
+  }
+}
+
 function arr2blob(bmpArr) {
   return new Blob([bmpArr], {type: "image/bmp"});
 }
@@ -105,7 +112,7 @@ self.addEventListener("message", e => {
 
   // Client sent task error
   case "avif-error":
-    taskById[msg.id] && taskById[msg.id].reject(new Error(msg.data));
+    rejectTask(msg.id, new Error(msg.data));
     break;
 
   // Client sent task request
