@@ -37,11 +37,12 @@ npm install avif.js
 
 ```js
 // Put this to reg.js and serve avif-sw.js from web root
+// Both scripts should be transpilled (either manually with e.g. browserify or
+// automatically by parcel)
 require("avif.js").register("/avif-sw.js");
 ```
 
 ```html
-<html>
 <body>
   <!-- Register worker -->
   <script src="reg.js"></script>
@@ -54,7 +55,6 @@ require("avif.js").register("/avif-sw.js");
     some content
   </div>
 </body>
-</html>
 ```
 
 That's it! Service worker will detect all fetch requests for AVIF files and
