@@ -28,11 +28,11 @@
     "wasm"
   ],
   "dependencies": {
-    "dav1d.js": "^0.1.0"
+    "dav1d.js": "^0.1.1"
   },
   "devDependencies": {
     "parcel-bundler": "^1.12.3",
     "parcel-plugin-disable-loaders": "^1.0.3",
-    "terser": "^3.16.1"
+    "terser": "^3.17.0"
   }
 }
