@@ -7,7 +7,27 @@ if ("serviceWorker" in navigator) {
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+function showExternalURL() {
+  document.body.innerHTML = "";
+  navigator.serviceWorker.addEventListener("message", e => {
+    const msg = e.data;
+    if (msg && msg.type === "avif-task") {
+      const blob = new Blob([msg.data], {type: "image/bmp"});
+      const img = document.createElement("img");
+      img.src = URL.createObjectURL(blob);
+      document.body.appendChild(img);
+    }
+  });
+  fetch(extURL).then(res => res.arrayBuffer()).then(avifArr => {
+    navigator.serviceWorker.controller.postMessage({
+      id: "demo",
+      type: "avif-task",
+      data: avifArr,
+    }, [avifArr]);
+  });
+}
+
+function setupInteractiveDemo() {
   const loadButton = document.getElementById("load-button");
   const customItem = document.getElementById("custom-item");
   const fileInput = document.getElementById("file-input");
@@ -68,4 +88,8 @@ document.addEventListener("DOMContentLoaded", () => {
       showCustomImage(msg.data);
     }
   });
-});
+}
+
+const urlParams = new URLSearchParams(location.search);
+const extURL = urlParams.get("src");
+document.addEventListener("DOMContentLoaded", extURL ? showExternalURL : setupInteractiveDemo);
